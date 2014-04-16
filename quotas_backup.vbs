@@ -44,10 +44,14 @@ End If
 
 Set objFileIn = objFSO.OpenTextFile(CurrentDirectory & "\all_quotas.txt", ForReading)
 Set objFileOut = objFSO.OpenTextFile(CurrentDirectory & "\quotas_create.bat", ForWriting, True)
+Set objFileOut1 = objFSO.OpenTextFile(CurrentDirectory & "\folders_copy.bat", ForWriting, True)
 Set filesize = objFSO.GetFile(CurrentDirectory & "\quota_templates.xml")
 objFileOut.Write("@echo off" & vbCrLf)
-
-
+objFileOut1.Write("@echo off" & vbCrLf)
+Set objREx = CreateObject("VBScript.RegExp")
+objREx.Global = True   
+objREx.IgnoreCase = True
+objREx.Pattern = ".*\\"
 Set objRegEx = CreateObject("VBScript.RegExp")
 objRegEx.Global = True   
 objRegEx.IgnoreCase = True
@@ -63,6 +67,7 @@ Do Until objFileIn.AtEndOfStream
 Loop
 
 objFileOut.Close
+objFileOut1.Close
 objFileIn.Close
 
 Sub ProcessQuota()
@@ -114,6 +119,9 @@ Sub ProcessQuota()
 	Else 'If quota was based off template then use this template again during quota creation
 		objFileOut.Write("dirquota quota add /Overwrite /Path:""" & quota_path & """ /Limit:" & quota_limit & " /Type:" & quota_type & " /Status:" & quota_status & " /SourceTemplate:""" & source_template & """" & vbCrLf)
 	End If
+	
+	'Generating folders_copy.bat
+	objFileOut1.Write("xcopy /y /k /e /z """ & quota_path & "\*"" ""%1\" & objREx.Replace(quota_path,"") & "\*""" & vbCrLf)
 	
 	End If
 End Sub

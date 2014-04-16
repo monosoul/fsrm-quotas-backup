@@ -15,7 +15,7 @@ Example: .\folders_copy.bat \\\new-server\d$
 
 
 Run quotas_backup.vbs on server from which you are willing to move quotas.
-It will generate 3 files:
+It will generate 4 files:
 
 1) quota_templates.xml - contains quotas templates exported by "dirquota template export";
 

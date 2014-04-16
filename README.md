@@ -7,7 +7,7 @@ Usage:
 
 .\quotas_backup.vbs - launch on old server (from which quotas are going to migrate)
 
-.\quotas_create.bat - launch on new server (to which quotas are goinf to migrate)
+.\quotas_create.bat - launch on new server (to which quotas are going to migrate)
 
 
 Run quotas_backup.vbs on server from which you are willing to move quotas.

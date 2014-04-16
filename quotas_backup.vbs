@@ -10,7 +10,7 @@ CurrentDirectory = objFSO.GetAbsolutePathName(".")
 quotasexist=0
 
 'Getting quotas list
-oShell.run "cmd /c ""dirquota q l > " & CurrentDirectory & "\all_quotas.txt""",0,bWaitOnReturn
+oShell.run "cmd /c chcp 1251 & dirquota q l > """ & CurrentDirectory & "\all_quotas.txt""",0,bWaitOnReturn
 
 'If quotas are exist then templates would be exported
 Set objFileIn = objFSO.OpenTextFile(CurrentDirectory & "\all_quotas.txt", ForReading)

@@ -9,7 +9,7 @@ Usage:
 
 .\folders_copy.bat <Destination_folder> - launch on old server (from which quotas
 are going to migrate) to copy target folders to a new server.
-Example: .\folders_copy.bat \\new-server\d$
+Example: .\folders_copy.bat \\\new-server\d$
 
 .\quotas_create.bat - launch on new server (to which quotas are going to migrate)
 

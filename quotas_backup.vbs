@@ -47,7 +47,9 @@ Set objFileOut = objFSO.OpenTextFile(CurrentDirectory & "\quotas_create.bat", Fo
 Set objFileOut1 = objFSO.OpenTextFile(CurrentDirectory & "\folders_copy.bat", ForWriting, True)
 Set filesize = objFSO.GetFile(CurrentDirectory & "\quota_templates.xml")
 objFileOut.Write("@echo off" & vbCrLf)
+objFileOut.Write("chcp 1251" & vbCrLf)
 objFileOut1.Write("@echo off" & vbCrLf)
+objFileOut1.Write("chcp 1251" & vbCrLf)
 Set objREx = CreateObject("VBScript.RegExp")
 objREx.Global = True   
 objREx.IgnoreCase = True

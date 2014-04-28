@@ -72,6 +72,21 @@ objFileOut.Close
 objFileOut1.Close
 objFileIn.Close
 
+'Changing quota_templates.xml codepage from UCS-2 LE (UTF-16) to UTF-8
+ChangeCodepage CurrentDirectory & "\quota_templates.xml", "UTF-16LE", "UTF-8"
+
+'Changing DataBase version from 1.0 to 2.0
+Set objFileACL = objFSO.OpenTextFile(CurrentDirectory & "\quota_templates.xml", ForReading)
+strText = objFileACL.ReadAll
+objFileACL.Close
+strNewText = Replace(strText, "<Header DatabaseVersion = '1.0' >", "<Header DatabaseVersion = '2.0' >")
+Set objFileACL = objFSO.OpenTextFile(CurrentDirectory & "\quota_templates.xml", ForWriting)
+objFileACL.Write strNewText
+objFileACL.Close
+
+'Changing quota_templates.xml codepage from UTF-8 to UCS-2 LE (UTF-16)
+ChangeCodepage CurrentDirectory & "\quota_templates.xml", "UTF-8", "UTF-16LE"
+
 Sub ProcessQuota()
 	
 	quota_path = ""
@@ -96,6 +111,12 @@ Sub ProcessQuota()
 	
 	If (InStr(source_template, "(Does not match template)") <> 0) Then
 		source_template = RTrim(Left(source_template, Len(source_template) - Len("(Does not match template)")))
+	End If
+	
+	'Removing "(Matches template)" from template's name (if there is one)
+	
+	If (InStr(source_template, "(Matches template)") <> 0) Then
+		source_template = RTrim(Left(source_template, Len(source_template) - Len("(Matches template)")))
 	End If
 	
 	'Getting quota type from the limit string
@@ -127,3 +148,18 @@ Sub ProcessQuota()
 	
 	End If
 End Sub
+
+Function ChangeCodepage(ByVal FileName, ByVal FromCP, ByVal ToCP)
+  Set ADODBStream = CreateObject("ADODB.Stream")
+  ADODBStream.Type = 2
+  ADODBStream.Charset = FromCP
+  ADODBStream.Open()
+  ADODBStream.LoadFromFile(FileName)
+  Text = ADODBStream.ReadText()
+  ADODBStream.Close()
+  ADODBStream.Charset = ToCP
+  ADODBStream.Open()
+  ADODBStream.WriteText(Text)
+  ADODBStream.SaveToFile FileName, 2
+  ADODBStream.Close()
+End Function

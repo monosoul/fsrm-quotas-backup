@@ -6,7 +6,9 @@ Set oShell = CreateObject("WScript.Shell")
 SysDrive=oShell.ExpandEnvironmentStrings("%SystemDrive%")
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 Set colDrives = objFSO.Drives
-CurrentDirectory = objFSO.GetAbsolutePathName(".")
+PathToScript = Wscript.ScriptFullName
+Set ScriptFile = objFSO.GetFile(PathToScript)
+CurrentDirectory = objFSO.GetParentFolderName(ScriptFile)
 quotasexist=0
 
 'Getting quotas list
